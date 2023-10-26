@@ -343,8 +343,11 @@ class CoordinateDescentRouter(nn.Module):
         self.cosine_sim_scale = cosine_sim_scale
 
     def route_back(self, src, routed_tokens, indices):
-        batch_range = create_batch_range(routed_tokens)
-        src[batch_range, indices] = routed_tokens
+        batch_range = create_batch_range(routed_tokens, 0)
+        if indices==None:
+            src[batch_range]=routed_tokens
+        else:
+            src[batch_range,indices]=routed_tokens
         return src
 
     def forward(
